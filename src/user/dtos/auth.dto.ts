@@ -1,4 +1,3 @@
-import { Injectable } from '@nestjs/common';
 import {
   IsEmail,
   IsNotEmpty,
@@ -7,7 +6,6 @@ import {
   MinLength,
 } from 'class-validator';
 
-@Injectable()
 export class RegisterDto {
   @IsString()
   @IsNotEmpty()
@@ -18,6 +16,15 @@ export class RegisterDto {
   })
   phone: string;
 
+  @IsEmail()
+  email: string;
+
+  @IsString()
+  @MinLength(5)
+  password: string;
+}
+
+export class LoginDto {
   @IsEmail()
   email: string;
 
