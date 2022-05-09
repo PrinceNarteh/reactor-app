@@ -3,10 +3,10 @@ import {
   ConflictException,
   Injectable,
 } from '@nestjs/common';
-import { PrismaService } from 'src/prisma/prisma.service';
-import * as bcrypt from 'bcryptjs';
 import { User, UserType } from '@prisma/client';
+import * as bcrypt from 'bcryptjs';
 import * as jwt from 'jsonwebtoken';
+import { PrismaService } from 'src/prisma/prisma.service';
 
 interface RegisterParams {
   name: string;
@@ -18,6 +18,11 @@ interface RegisterParams {
 interface LoginParams {
   email: string;
   password: string;
+}
+
+interface GenerateProductKeyParams {
+  email: string;
+  userType: UserType;
 }
 
 @Injectable()
@@ -68,5 +73,10 @@ export class AuthService {
     }
     const token = this.generateToken(user);
     return { token };
+  }
+
+  async generateProductKey({ email, userType }: GenerateProductKeyParams) {
+    const string = `${email}-${userType}-${process.env.PRODUCT_KEY_SECRET}`;
+    return bcrypt.hash(string, 10);
   }
 }
