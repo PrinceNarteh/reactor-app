@@ -42,7 +42,10 @@ export class AuthService {
     );
   }
 
-  async register({ email, password, name, phone }: RegisterParams) {
+  async register(
+    { email, password, name, phone }: RegisterParams,
+    userType: UserType,
+  ) {
     const userExists = await this.primaService.user.findUnique({
       where: { email },
     });
@@ -57,7 +60,7 @@ export class AuthService {
         password: hashedPassword,
         phone,
         name,
-        user_type: UserType.BUYER,
+        user_type: userType,
       },
     });
     const token = this.generateToken(user);
