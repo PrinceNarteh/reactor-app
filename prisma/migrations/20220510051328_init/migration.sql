@@ -22,15 +22,15 @@ CREATE TABLE "User" (
 CREATE TABLE "Home" (
     "id" SERIAL NOT NULL,
     "address" TEXT NOT NULL,
-    "number_of_bedrooms" INTEGER NOT NULL,
-    "number_of_bathroom" DOUBLE PRECISION NOT NULL,
+    "numberOfBedrooms" INTEGER NOT NULL,
+    "numberOfBathrooms" DOUBLE PRECISION NOT NULL,
     "city" TEXT NOT NULL,
     "listed_data" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "price" DOUBLE PRECISION NOT NULL,
     "propertyType" "PropertyType" NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL,
-    "realtor_id" INTEGER NOT NULL,
+    "realtorId" INTEGER NOT NULL,
 
     CONSTRAINT "Home_pkey" PRIMARY KEY ("id")
 );
@@ -41,7 +41,7 @@ CREATE TABLE "Image" (
     "url" TEXT NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL,
-    "home_id" INTEGER NOT NULL,
+    "homeId" INTEGER NOT NULL,
 
     CONSTRAINT "Image_pkey" PRIMARY KEY ("id")
 );
@@ -50,9 +50,9 @@ CREATE TABLE "Image" (
 CREATE TABLE "Message" (
     "id" SERIAL NOT NULL,
     "body" TEXT NOT NULL,
-    "home_id" INTEGER NOT NULL,
-    "buyer_id" INTEGER NOT NULL,
-    "realtor_id" INTEGER NOT NULL,
+    "homeId" INTEGER NOT NULL,
+    "buyerId" INTEGER NOT NULL,
+    "realtorId" INTEGER NOT NULL,
 
     CONSTRAINT "Message_pkey" PRIMARY KEY ("id")
 );
@@ -61,16 +61,16 @@ CREATE TABLE "Message" (
 CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
 
 -- AddForeignKey
-ALTER TABLE "Home" ADD CONSTRAINT "Home_realtor_id_fkey" FOREIGN KEY ("realtor_id") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Home" ADD CONSTRAINT "Home_realtorId_fkey" FOREIGN KEY ("realtorId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Image" ADD CONSTRAINT "Image_home_id_fkey" FOREIGN KEY ("home_id") REFERENCES "Home"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Image" ADD CONSTRAINT "Image_homeId_fkey" FOREIGN KEY ("homeId") REFERENCES "Home"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Message" ADD CONSTRAINT "Message_buyer_id_fkey" FOREIGN KEY ("buyer_id") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Message" ADD CONSTRAINT "Message_buyerId_fkey" FOREIGN KEY ("buyerId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Message" ADD CONSTRAINT "Message_realtor_id_fkey" FOREIGN KEY ("realtor_id") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Message" ADD CONSTRAINT "Message_realtorId_fkey" FOREIGN KEY ("realtorId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Message" ADD CONSTRAINT "Message_home_id_fkey" FOREIGN KEY ("home_id") REFERENCES "Home"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Message" ADD CONSTRAINT "Message_homeId_fkey" FOREIGN KEY ("homeId") REFERENCES "Home"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

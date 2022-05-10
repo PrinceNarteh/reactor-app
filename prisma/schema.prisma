@@ -27,47 +27,47 @@ model User {
   phone            String
   email            String    @unique
   password         String
-  user_type        UserType
-  created_at       DateTime  @default(now())
-  updated_at       DateTime  @updatedAt
+  userType         UserType  @map("user_type")
+  createdAt        DateTime  @default(now()) @map("created_at")
+  updatedAt        DateTime  @updatedAt @map("updated_at")
   homes            Home[]
   buyer_messages   Message[] @relation("buyer_messages")
   realtor_messages Message[] @relation("realtor_messages")
 }
 
 model Home {
-  id                 Int          @id @default(autoincrement())
-  address            String
-  number_of_bedrooms Int
-  number_of_bathroom Float
-  city               String
-  listed_data        DateTime     @default(now())
-  price              Float
-  propertyType       PropertyType
-  created_at         DateTime     @default(now())
-  updated_at         DateTime     @updatedAt
-  realtor_id         Int
-  realtor            User         @relation(fields: [realtor_id], references: [id])
-  images             Image[]
-  messages           Message[]
+  id                Int          @id @default(autoincrement())
+  address           String
+  numberOfBedrooms  Int          @map("number_of_bedrooms")
+  numberOfBathrooms Float        @map("number_of_bathrooms")
+  city              String
+  listedData        DateTime     @default(now()) @map("listed_data")
+  price             Float
+  propertyType      PropertyType
+  createdAt         DateTime     @default(now()) @map("created_at")
+  updatedAt         DateTime     @updatedAt @map("updated_at")
+  realtorId         Int          @map("realtor_id")
+  realtor           User         @relation(fields: [realtorId], references: [id])
+  images            Image[]
+  messages          Message[]
 }
 
 model Image {
-  id         Int      @id @default(autoincrement())
-  url        String
-  created_at DateTime @default(now())
-  updated_at DateTime @updatedAt
-  home_id    Int
-  home       Home     @relation(fields: [home_id], references: [id])
+  id        Int      @id @default(autoincrement())
+  url       String
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  homeId    Int      @map("home_id")
+  home      Home     @relation(fields: [homeId], references: [id])
 }
 
 model Message {
-  id         Int    @id @default(autoincrement())
-  body       String
-  home_id    Int
-  home       Home   @relation(fields: [home_id], references: [id])
-  buyer_id   Int
-  buyer      User   @relation("buyer_messages", fields: [buyer_id], references: [id])
-  realtor_id Int
-  realtor    User   @relation("realtor_messages", fields: [realtor_id], references: [id])
+  id        Int    @id @default(autoincrement())
+  body      String
+  homeId    Int    @map("home_id")
+  home      Home   @relation(fields: [homeId], references: [id])
+  buyerId   Int    @map("buyer_id")
+  buyer     User   @relation("buyer_messages", fields: [buyerId], references: [id])
+  realtorId Int    @map("realtor_id")
+  realtor   User   @relation("realtor_messages", fields: [realtorId], references: [id])
 }
