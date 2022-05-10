@@ -60,7 +60,7 @@ export class AuthService {
         password: hashedPassword,
         phone,
         name,
-        user_type: userType,
+        userType,
       },
     });
     const token = this.generateToken(user);
