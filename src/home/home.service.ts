@@ -7,7 +7,23 @@ export class HomeService {
   constructor(private readonly prismaService: PrismaService) {}
 
   async getHomes(): Promise<HomeResponseDto[]> {
-    const homes = await this.prismaService.home.findMany();
+    const homes = await this.prismaService.home.findMany({
+      select: {
+        id: true,
+        address: true,
+        city: true,
+        price: true,
+        propertyType: true,
+        numberOfBathrooms: true,
+        numberOfBedrooms: true,
+        images: {
+          select: {
+            url: true,
+          },
+          take: 1,
+        },
+      },
+    });
     return homes.map((home) => new HomeResponseDto(home));
   }
 }
