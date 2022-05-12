@@ -4,6 +4,7 @@ import {
   Get,
   HttpCode,
   HttpStatus,
+  Param,
   ParseIntPipe,
   Post,
   Put,
@@ -40,8 +41,9 @@ export class HomeController {
   }
 
   @Get(':id')
-  getHome() {
-    return {};
+  async getHome(@Param('id') id: number): Promise<HomeResponseDto> {
+    const home = await this.homeService.getHome(id);
+    return new HomeResponseDto(home);
   }
 
   @Post()
