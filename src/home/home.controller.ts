@@ -50,7 +50,8 @@ export class HomeController {
   @Post()
   async createHome(@Body() body: CreateHomeDto): Promise<HomeResponseDto> {
     console.log(body);
-    return await this.homeService.createHome(body);
+    // return await this.homeService.createHome(body);
+return
   }
 
   @Put(':id')
