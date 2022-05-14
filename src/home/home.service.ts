@@ -12,6 +12,16 @@ interface GetHomeParams {
   propertyType?: PropertyType;
 }
 
+interface CreateHomeParams {
+  address: string;
+  numberOfBedrooms: number;
+  numberOfBathrooms: number;
+  city: string;
+  price: number;
+  propertyType: PropertyType;
+  images: { url: string }[];
+}
+
 @Injectable()
 export class HomeService {
   constructor(private readonly prismaService: PrismaService) {}
@@ -44,9 +54,40 @@ export class HomeService {
   }
 
   async getHome(id: number) {
-    const home = await this.prismaService.home.findMany({ where: { id } });
+    const home = await this.prismaService.home.findUnique({ where: { id } });
 
     if (!home) throw new NotFoundException();
+
+    return new HomeResponseDto(home);
+  }
+
+  async createHome({
+    address,
+    city,
+    images,
+    numberOfBathrooms,
+    numberOfBedrooms,
+    price,
+    propertyType,
+  }: CreateHomeParams): Promise<HomeResponseDto> {
+    const createImages = images.map((image) => ({ url: image.url }));
+
+    // console.log(images);
+
+    const home = await this.prismaService.home.create({
+      data: {
+        address,
+        city,
+        numberOfBathrooms,
+        numberOfBedrooms,
+        price,
+        propertyType,
+        realtorId: 1,
+        images: {
+          create: createImages,
+        },
+      },
+    });
 
     return new HomeResponseDto(home);
   }
