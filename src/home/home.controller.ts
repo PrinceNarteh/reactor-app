@@ -55,7 +55,6 @@ export class HomeController {
   }
 
   @Roles(UserType.REALTOR)
-  @UseGuards(AuthGuard)
   @Post()
   async createHome(
     @Body() body: HomeDto,
@@ -65,7 +64,6 @@ export class HomeController {
   }
 
   @Roles(UserType.REALTOR)
-  @UseGuards(AuthGuard)
   @Put(':id')
   async updateHome(
     @Param('id', ParseIntPipe) id: number,
@@ -79,7 +77,6 @@ export class HomeController {
   }
 
   @Roles(UserType.REALTOR)
-  @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.NO_CONTENT)
   @Delete(':id')
   async deleteHome(@Param('id', ParseIntPipe) id: number, @User() user: IUser) {
