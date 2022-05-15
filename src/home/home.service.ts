@@ -61,15 +61,18 @@ export class HomeService {
     return new HomeResponseDto(home);
   }
 
-  async createHome({
-    address,
-    city,
-    images,
-    numberOfBathrooms,
-    numberOfBedrooms,
-    price,
-    propertyType,
-  }: HomeParams): Promise<HomeResponseDto> {
+  async createHome(
+    {
+      address,
+      city,
+      images,
+      numberOfBathrooms,
+      numberOfBedrooms,
+      price,
+      propertyType,
+    }: HomeParams,
+    userId: number,
+  ): Promise<HomeResponseDto> {
     const createImages = images.map((image) => ({ url: image.url }));
 
     // console.log(images);
@@ -82,7 +85,7 @@ export class HomeService {
         numberOfBedrooms,
         price,
         propertyType,
-        realtorId: 1,
+        realtorId: userId,
         images: {
           create: createImages,
         },

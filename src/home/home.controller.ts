@@ -12,6 +12,7 @@ import {
   Query,
 } from '@nestjs/common';
 import { PropertyType } from '@prisma/client';
+import { IUser, User } from 'src/user/decorators/user.decorator';
 import { HomeDto, HomeResponseDto } from './dtos/home.dto';
 import { HomeService } from './home.service';
 
@@ -50,8 +51,11 @@ export class HomeController {
   }
 
   @Post()
-  async createHome(@Body() body: HomeDto): Promise<HomeResponseDto> {
-    return await this.homeService.createHome(body);
+  async createHome(
+    @Body() body: HomeDto,
+    @User() user: IUser,
+  ): Promise<HomeResponseDto> {
+    return await this.homeService.createHome(body, user.id);
   }
 
   @Put(':id')
