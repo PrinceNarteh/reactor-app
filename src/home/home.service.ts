@@ -92,7 +92,10 @@ export class HomeService {
     return new HomeResponseDto(home);
   }
 
-  async updateHome(id: number, data: Partial<Omit<HomeParams, 'images'>>): Promise<HomeResponseDto> {
+  async updateHome(
+    id: number,
+    data: Partial<Omit<HomeParams, 'images'>>,
+  ): Promise<HomeResponseDto> {
     const home = await this.prismaService.home.findUnique({ where: { id } });
     if (!home) throw new NotFoundException();
 
@@ -102,5 +105,9 @@ export class HomeService {
     });
 
     return new HomeResponseDto(updatedHome);
+  }
+
+  async deleteHome(id: number) {
+    return await this.prismaService.home.delete({ where: { id } });
   }
 }
