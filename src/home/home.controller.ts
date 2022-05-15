@@ -12,7 +12,7 @@ import {
   Query,
 } from '@nestjs/common';
 import { PropertyType } from '@prisma/client';
-import { CreateHomeDto, HomeResponseDto } from './dtos/home.dto';
+import { HomeDto, HomeResponseDto } from './dtos/home.dto';
 import { HomeService } from './home.service';
 
 @Controller('home')
@@ -42,21 +42,24 @@ export class HomeController {
   }
 
   @Get(':id')
-  async getHome(@Param('id') id: number): Promise<HomeResponseDto> {
+  async getHome(
+    @Param('id', ParseIntPipe) id: number,
+  ): Promise<HomeResponseDto> {
     const home = await this.homeService.getHome(id);
     return new HomeResponseDto(home);
   }
 
   @Post()
-  async createHome(@Body() body: CreateHomeDto): Promise<HomeResponseDto> {
-    console.log(body);
-    // return await this.homeService.createHome(body);
-return
+  async createHome(@Body() body: HomeDto): Promise<HomeResponseDto> {
+    return await this.homeService.createHome(body);
   }
 
   @Put(':id')
-  updateHome() {
-    return {};
+  async updateHome(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() body: Partial<HomeDto>,
+  ): Promise<HomeResponseDto> {
+    return await this.homeService.updateHome(id, body);
   }
 
   @HttpCode(HttpStatus.NO_CONTENT)

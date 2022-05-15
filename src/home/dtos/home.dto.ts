@@ -39,7 +39,7 @@ class Image {
   url: string;
 }
 
-export class CreateHomeDto {
+export class HomeDto {
   @IsString()
   @IsNotEmpty()
   address: string;

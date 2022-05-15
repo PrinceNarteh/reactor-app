@@ -12,7 +12,7 @@ interface GetHomeParams {
   propertyType?: PropertyType;
 }
 
-interface CreateHomeParams {
+interface HomeParams {
   address: string;
   numberOfBedrooms: number;
   numberOfBathrooms: number;
@@ -69,7 +69,7 @@ export class HomeService {
     numberOfBedrooms,
     price,
     propertyType,
-  }: CreateHomeParams): Promise<HomeResponseDto> {
+  }: HomeParams): Promise<HomeResponseDto> {
     const createImages = images.map((image) => ({ url: image.url }));
 
     // console.log(images);
@@ -90,5 +90,17 @@ export class HomeService {
     });
 
     return new HomeResponseDto(home);
+  }
+
+  async updateHome(id: number, data: Partial<Omit<HomeParams, 'images'>>): Promise<HomeResponseDto> {
+    const home = await this.prismaService.home.findUnique({ where: { id } });
+    if (!home) throw new NotFoundException();
+
+    const updatedHome = await this.prismaService.home.update({
+      where: { id },
+      data,
+    });
+
+    return new HomeResponseDto(updatedHome);
   }
 }
