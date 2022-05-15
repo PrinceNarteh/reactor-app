@@ -145,4 +145,20 @@ export class HomeService {
       },
     });
   }
+
+  getMessagesByHome(homeId: number) {
+    return this.prismaService.message.findMany({
+      where: { id: homeId },
+      select: {
+        body: true,
+        buyer: {
+          select: {
+            name: true,
+            email: true,
+            phone: true,
+          },
+        },
+      },
+    });
+  }
 }
