@@ -68,3 +68,9 @@ export class HomeDto {
   @IsArray()
   images: Image[];
 }
+
+export class EnquireDto {
+  @IsString()
+  @IsNotEmpty()
+  message: string;
+}

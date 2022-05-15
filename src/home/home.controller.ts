@@ -17,7 +17,7 @@ import { PropertyType, UserType } from '@prisma/client';
 import { Roles } from 'src/decorators/roles.decorator';
 import { AuthGuard } from 'src/guards/auth.guard';
 import { IUser, User } from 'src/user/decorators/user.decorator';
-import { HomeDto, HomeResponseDto } from './dtos/home.dto';
+import { EnquireDto, HomeDto, HomeResponseDto } from './dtos/home.dto';
 import { HomeService } from './home.service';
 
 @Controller('home')
@@ -84,5 +84,15 @@ export class HomeController {
     if (realtor.id !== user.id) throw new UnauthorizedException();
 
     return this.homeService.deleteHome(id);
+  }
+
+  @Roles(UserType.BUYER)
+  @Post('/inquire/id')
+  async inquire(
+    @Param('id', ParseIntPipe) homeId: number,
+    @User() user: IUser,
+    @Body() { message }: EnquireDto,
+  ) {
+    return this.homeService.inquire(user, homeId, message);
   }
 }
