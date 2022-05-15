@@ -10,6 +10,7 @@ import {
   Post,
   Put,
   Query,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { PropertyType } from '@prisma/client';
 import { IUser, User } from 'src/user/decorators/user.decorator';
@@ -62,13 +63,20 @@ export class HomeController {
   async updateHome(
     @Param('id', ParseIntPipe) id: number,
     @Body() body: Partial<HomeDto>,
+    @User() user: IUser,
   ): Promise<HomeResponseDto> {
+    const realtor = await this.homeService.getRealtorByHomeId(id);
+    if (realtor.id !== user.id) throw new UnauthorizedException();
+
     return await this.homeService.updateHome(id, body);
   }
 
   @HttpCode(HttpStatus.NO_CONTENT)
   @Delete(':id')
-  deleteHome(@Param('id', ParseIntPipe) id: number) {
+  async deleteHome(@Param('id', ParseIntPipe) id: number, @User() user: IUser) {
+    const realtor = await this.homeService.getRealtorByHomeId(id);
+    if (realtor.id !== user.id) throw new UnauthorizedException();
+
     return this.homeService.deleteHome(id);
   }
 }
